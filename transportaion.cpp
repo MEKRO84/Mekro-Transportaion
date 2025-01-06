@@ -9,12 +9,59 @@ using namespace std;
 vector<variant<int, string>> ft;
 vector<variant<int, string>> reserved;
 vector<variant<int, string>> cancled;
-string user,fullname;
+string user = "",fullname = "";
 string fId = "F00",tId = "T10";
 int fId2 = 10000, tId2 = 10000;
 
-
+void adminagain();
+void valshow();
+void del();
+void add();
 void admin();
+void search();
+void passenger();
+
+int main(){
+    char b;
+    system("cls");
+    cout<<"Welcome to transportion app!\nPls enter your username\n>> ";
+    while(true){
+        cin.clear();
+        cin>>user;
+        if(!cin.fail() && user == "admin"){
+            admin();
+            break;
+        }else if(!cin.fail() && !(int(user[0])>31 && int(user[0])<65) && !(int(user[0])>90 && int(user[0])<97) && !(int(user[0])>122 && int(user[0])<127)){
+            system("cls");
+            cout<<"Pls enter your name\n>> ";
+            while(true){
+
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                getline(cin,fullname);
+
+                if(!cin.fail() && !(int(fullname[0])>31 && int(fullname[0])<65) && !(int(fullname[0])>90 && int(fullname[0])<97) && !(int(fullname[0])>122 && int(fullname[0])<127)){
+                    break;}
+                else{
+                            system("cls");
+                            cin.clear();
+                            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                            cout<<"Pls enter a valid name that is not start with character or a number\n>> ";
+                    }}
+            passenger();
+            break;
+        }else{
+            system("cls");
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout<<"Pls enter a valid username that is not start with character or a number\n>> ";}
+    }
+
+
+    return 0;
+}
+
+
 void adminagain(){
     char ask;
     cin>>ask;
@@ -22,7 +69,8 @@ void adminagain(){
         admin();
     }else if(!cin.fail() && (ask == 'n' || ask == 'N')){
         system("cls");
-        cout<<"Have nice time!";
+        cout<<"Have nice time!\n";
+        main();
     }else if(cin.fail()){
         cout<<"Wrong input, Try again\n>> ";
         cin.clear();
@@ -84,6 +132,7 @@ void del(){
     cout<<"Do you like to do another thing Sir?(y/n)>> ";
     adminagain();
 }
+void search();
 
 void add(){
     int tmp2,i = 0;
@@ -161,13 +210,44 @@ void admin(){
             a = 3;
         }else if(!cin.fail() && a == 0){
             system("cls");
-            cout<<"Have nice time!";
+            cout<<"Have nice time!\n";
+            main();
             break;}else{
             cout<<"Invalid input, Try again\n>> ";
         }
     }while(true);
 } 
 
+void search(){
+    string a;
+    int j = 1,pow = 1;
+    system("cls");
+    cout<<"Pls enter the Flight/Train's ID or destenation\n>> ";
+    cin>>a;
+    if((a[0] == 'F' && a[1] == '0' && a[2] == '0') || (a[0] == 'F' && a[1] == '0' && a[2] == '0')){
+        a = a.substr(3);
+        cout<<"List of all Flights/Trains\n";
+        for(int i = 0;i<ft.size();i+=7){
+            if(a == to_string(get<int>(ft[i+1]))){
+                cout<<j<<")ID: "<<get<string>(ft[i])<<get<int>(ft[i+1])<<" ------ Type: "<<get<string>(ft[i+2])<<" ------ From: "
+                    <<get<string>(ft[i+3])<<" ------ To: "<<get<string>(ft[i+4])<<" ------ Empty seats: "<<get<int>(ft[i+5])<<" ------ Move at: "<<get<string>(ft[i+6])<<endl;
+                j++;
+            }
+        }
+        j = 1;
+    }else{
+        cout<<"List of all Flights/Trains\n";
+        for(int i = 0;i<ft.size();i+=7){
+        if(a == get<string>(ft[i+4])){
+            cout<<j<<")ID: "<<get<string>(ft[i])<<get<int>(ft[i+1])<<" ------ Type: "<<get<string>(ft[i+2])<<" ------ From: "
+                <<get<string>(ft[i+3])<<" ------ To: "<<get<string>(ft[i+4])<<" ------ Empty seats: "<<get<int>(ft[i+5])<<" ------ Move at: "<<get<string>(ft[i+6])<<endl;
+            j++;
+            }
+        }
+        j = 1;
+    }
+
+}
 
 void passenger(){
     int a = 4;
@@ -176,7 +256,7 @@ void passenger(){
     while(true){
         cin>>a;
         if(!cin.fail() && a == 1){
-            // search();
+            search();
             break;
         }else if(!cin.fail() && a == 2){
             // reserve();
@@ -191,48 +271,13 @@ void passenger(){
             a = 4;
         }else if(!cin.fail() && a == 0){
             system("cls");
-            cout<<"Have nice time!";
+            cout<<"Have nice time!\n";
+            main();
             break;
         }else{
             cout<<"Invalid input, Try again\n>> ";
         }
     }
-}
-
-
-int main(){
-    bool accept = false;
-    cout<<"Welcome to transportion app!\nPls enter your username\n>> ";
-    while(true){
-    getline(cin,user);
-    if(!cin.fail() && user == "admin"){
-        admin();
-        break;
-    }else if(!cin.fail() && !(int(user[0])>31 && int(user[0])<65) && !(int(user[0])>90 && int(user[0])<97) && !(int(user[0])>122 && int(user[0])<127)){
-        system("cls");
-        cout<<"Pls enter your name\n>> ";
-        while(true){
-            getline(cin,fullname);
-            if(!cin.fail() && !(int(fullname[0])>31 && int(fullname[0])<65) && !(int(fullname[0])>90 && int(fullname[0])<97) && !(int(fullname[0])>122 && int(fullname[0])<127)){
-                accept = true;
-                break;}
-            else{
-                        system("cls");
-                        cin.clear();
-                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-                        cout<<"Pls enter a valid name that is not start with character or a number\n>> ";
-                }}
-        passenger();
-        break;
-    }else{
-        system("cls");
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout<<"Pls enter a valid username that is not start with character or a number\n>> ";}
-    }
-
-
-    return 0;
 }
 
 
