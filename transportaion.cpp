@@ -52,12 +52,20 @@ void del(){
     if(ft.empty() == false){
     valshow(ft);
     cout<<"Pls enter the Flight/Train number\n>> ";
-    cin>>a;
+    while(true){
+        cin>>a;
+        if(cin.fail() || a<0){
+            cout<<"Pls enter a valid number\n>> ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }else{
+            break;
+        }
+    }
     for(int i = 0;i<ft.size();i+=7){
         if(i == a - 1){
             for(int j = 0;j<7;j++){
             ft.erase(ft.begin()+i);}
-            cout<<"***The Flight/Train removed successfully***\n";
             ok = true;
             break;
         }
@@ -65,12 +73,15 @@ void del(){
     valshow(ft);
     if(ok != true){
         cout<<"Flight/Train did't remove due to inexistance or invalid input number\n";
-    }}else{
+    }else{
+        cout<<"***The Flight/Train removed successfully***\n";
+    }
+    }else{
         system("cls");
         cout<<"There is no Flights/Trains\n";
     }
     
-    cout<<"Do you like to do another thing Sir?(y/n): ";
+    cout<<"Do you like to do another thing Sir?(y/n)>> ";
     adminagain();
 }
 
@@ -110,14 +121,23 @@ void add(){
     ft.push_back(tmp);
     system("cls");
     cout<<"Pls type the count of seats>> ";
-    cin>>tmp2;
+    while(true){
+        cin>>tmp2;
+        if(cin.fail() || tmp2<0){
+            cout<<"Seats should be a positive number\nPls try again\n>> ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }else{
+            break;
+        }
+    }
     ft.push_back(tmp2);
     system("cls");
     cout<<"Pls type the start time by this format 'hh:mm(pm/am)'>> ";
     cin>>tmp;
     ft.push_back(tmp);
     system("cls");
-    cout<<"***Flight/Train added successfully***\nDo you like to do another thing Sir?(y/n): ";
+    cout<<"***Flight/Train added successfully***\nDo you like to do another thing Sir?(y/n)>> ";
     adminagain();
 
 }
@@ -149,17 +169,34 @@ void admin(){
 } 
 
 int main(){
-    cout<<"Welcome to transportion app!\nPls enter your username: ";
+    bool accept = false;
+    cout<<"Welcome to transportion app!\nPls enter your username\n>> ";
+    while(true){
     cin>>user;
-    if(user == "admin"){
+    if(!cin.fail() && user == "admin"){
         admin();
+        break;
+    }else if(!cin.fail() && !(int(user[0])>31 && int(user[0])<65) && !(int(user[0])>90 && int(user[0])<97) && !(int(user[0])>122 && int(user[0])<127)){
+        system("cls");
+        cout<<"Pls enter your name\n>> ";
+        while(true){
+            cin>>fullname;
+            if(!cin.fail() && !(int(fullname[0])>31 && int(fullname[0])<65) && !(int(fullname[0])>90 && int(fullname[0])<97) && !(int(fullname[0])>122 && int(fullname[0])<127)){
+                accept = true;
+                break;}
+            else{
+                        system("cls");
+                        cin.clear();
+                        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                        cout<<"Pls enter a valid name that is not start with character or a number\n>> ";
+                }}
+        break;
     }else{
         system("cls");
-        cout<<"Pls enter your name: ";
-        cin>>fullname;
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout<<"Pls enter a valid username that is not start with character or a number\n>> ";}
     }
-    
-
 
 
     return 0;
