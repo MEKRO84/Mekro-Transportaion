@@ -9,6 +9,7 @@ using namespace std;
 vector<variant<int, string>> ft;
 vector<variant<int, string>> reserved;
 vector<variant<int, string>> cancled;
+vector<variant<int, string>> tmpvec;
 string user = "",fullname = "";
 string fId = "F00",tId = "T10";
 int fId2 = 10000, tId2 = 10000;
@@ -218,8 +219,53 @@ void admin(){
     }while(true);
 } 
 
+void reserve(){
+    int a;
+    char ask;
+    cout<<"Pls enter the number of Flight/Train\n>> ";
+    cin>>a;
+    for(int i = 0;i<tmpvec.size();i+=9){
+        if(a-1 == i){
+                reserved.push_back(tmpvec[i]);
+                reserved.push_back(tmpvec[i+1]);
+                reserved.push_back(tmpvec[i+2]);
+                reserved.push_back(tmpvec[i+3]);
+                reserved.push_back(tmpvec[i+4]);
+                reserved.push_back(tmpvec[i+5]);
+                reserved.push_back(tmpvec[i+6]);
+                reserved.push_back(fullname);
+                reserved.push_back(user);
+                cout<<"Ticket added successfully!";
+                break;
+        }
+    }
+    cout<<"Do you want to continue?(y/n)>> ";
+    while(true){
+        cin>>ask;
+        if(!cin.fail() && (ask == 'y' || ask == 'Y')){
+            passenger();
+            break;
+        }else if(!cin.fail() && (ask == 'n' || ask == 'N')){
+            system("cls");
+            cout<<"Have nice time!\n";
+            main();
+            break;
+        }else if(cin.fail()){
+            cout<<"Wrong input, Try again\n>> ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout<<"Do you want to continue?(y/n)>> ";
+        }else{
+            cout<<"Invalid input, Try again\n>> ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }
+
+}}
+
 void search(){
     string a;
+    int b;
     int j = 1,pow = 1;
     system("cls");
     cout<<"Pls enter the Flight/Train's ID or destenation\n>> ";
@@ -231,6 +277,13 @@ void search(){
             if(a == to_string(get<int>(ft[i+1]))){
                 cout<<j<<")ID: "<<get<string>(ft[i])<<get<int>(ft[i+1])<<" ------ Type: "<<get<string>(ft[i+2])<<" ------ From: "
                     <<get<string>(ft[i+3])<<" ------ To: "<<get<string>(ft[i+4])<<" ------ Empty seats: "<<get<int>(ft[i+5])<<" ------ Move at: "<<get<string>(ft[i+6])<<endl;
+                tmpvec.push_back(ft[i]);
+                tmpvec.push_back(ft[i+1]);
+                tmpvec.push_back(ft[i+2]);
+                tmpvec.push_back(ft[i+3]);
+                tmpvec.push_back(ft[i+4]);
+                tmpvec.push_back(ft[i+5]);
+                tmpvec.push_back(ft[i+6]);
                 j++;
             }
         }
@@ -241,28 +294,90 @@ void search(){
         if(a == get<string>(ft[i+4])){
             cout<<j<<")ID: "<<get<string>(ft[i])<<get<int>(ft[i+1])<<" ------ Type: "<<get<string>(ft[i+2])<<" ------ From: "
                 <<get<string>(ft[i+3])<<" ------ To: "<<get<string>(ft[i+4])<<" ------ Empty seats: "<<get<int>(ft[i+5])<<" ------ Move at: "<<get<string>(ft[i+6])<<endl;
+                tmpvec.push_back(ft[i]);
+                tmpvec.push_back(ft[i+1]);
+                tmpvec.push_back(ft[i+2]);
+                tmpvec.push_back(ft[i+3]);
+                tmpvec.push_back(ft[i+4]);
+                tmpvec.push_back(ft[i+5]);
+                tmpvec.push_back(ft[i+6]);            
             j++;
             }
         }
         j = 1;
     }
+    cout<<"Pls enter the number of these options\n1)Reserving ticket\n2)Search again\n0)Exit\n>> ";
+    while(true){
+        cin>>b;
+        if(!cin.fail() && b == 1){
+            reserve();
+            break;
+        }else if(!cin.fail() && b == 2){
+            search();
+            tmpvec.clear();
+            break;
+        }else if(cin.fail()){
+            cout<<"Wrong input, Try again\n>> ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            a = 4;
+        }else if(!cin.fail() && b == 0){
+            system("cls");
+            tmpvec.clear();
+            passenger();
+            break;
+        }else{
+            cout<<"Invalid input, Try again\n>> ";
+        }
+    }
 
+}
+
+void showres(){
+    int j = 1,a;
+    system("cls");
+    cout<<"List of all Flights/Trains that reserved by '"<<user<<"'";
+    for(int i = 0;i<reserved.size();i+=9){
+        cout<<"\n"<<j<<")ID: "<<get<string>(reserved[i])<<get<int>(reserved[i+1])<<" ------ Type: "<<get<string>(reserved[i+2])<<" ------ From: "
+        <<get<string>(reserved[i+3])<<" ------ To: "<<get<string>(reserved[i+4])<<" ------ Seat number: "<<get<int>(reserved[i+5])
+        <<" ------ Move at: "<<get<string>(reserved[i+6])<<" ------ Reserved by: "<<get<string>(reserved[i+7])<<endl;
+        j++;}
+    j = 1;
+    cout<<"Pls enter the number of one option\n1)Cancleing a ticket\n0)Exit\n>> ";
+    while(true){
+        cin>>a;
+        if(!cin.fail() && a == 1){
+            add();
+            break;
+        }else if(cin.fail()){
+            cout<<"Wrong input, Try again\n>> ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        }else if(!cin.fail() && a == 0){
+            system("cls");
+            cout<<"Have nice time!\n";
+            main();
+            break;
+        }else{
+            cout<<"Invalid input, Try again\n>> ";
+        }
+    }
 }
 
 void passenger(){
     int a = 4;
     system("cls");
-    cout<<"Pls enter the number of these options\n1)Searchig tickets\n2)Reserving a ticket\n3)Cancleing a ticket\n0)Exit\n>> ";
+    cout<<"Pls enter the number of one option\n1)Searchig tickets\n2)Cancleing a ticket\n3)See tickets that reserved by '"<<user<<"'\n0)Exit\n>> ";
     while(true){
         cin>>a;
         if(!cin.fail() && a == 1){
             search();
             break;
         }else if(!cin.fail() && a == 2){
-            // reserve();
+            // cancle();
             break;
         }else if(!cin.fail() && a == 3){
-            // cancle();
+            showres();
             break;
         }else if(cin.fail()){
             cout<<"Wrong input, Try again\n>> ";
