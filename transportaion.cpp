@@ -159,7 +159,7 @@ void admin(){
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             a = 3;
-        }else if(a == 0){
+        }else if(!cin.fail() && a == 0){
             system("cls");
             cout<<"Have nice time!";
             break;}else{
@@ -168,11 +168,43 @@ void admin(){
     }while(true);
 } 
 
+
+void passenger(){
+    int a = 4;
+    system("cls");
+    cout<<"Pls enter the number of these options\n1)Searchig tickets\n2)Reserving a ticket\n3)Cancleing a ticket\n0)Exit\n>> ";
+    while(true){
+        cin>>a;
+        if(!cin.fail() && a == 1){
+            // search();
+            break;
+        }else if(!cin.fail() && a == 2){
+            // reserve();
+            break;
+        }else if(!cin.fail() && a == 3){
+            // cancle();
+            break;
+        }else if(cin.fail()){
+            cout<<"Wrong input, Try again\n>> ";
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            a = 4;
+        }else if(!cin.fail() && a == 0){
+            system("cls");
+            cout<<"Have nice time!";
+            break;
+        }else{
+            cout<<"Invalid input, Try again\n>> ";
+        }
+    }
+}
+
+
 int main(){
     bool accept = false;
     cout<<"Welcome to transportion app!\nPls enter your username\n>> ";
     while(true){
-    cin>>user;
+    getline(cin,user);
     if(!cin.fail() && user == "admin"){
         admin();
         break;
@@ -180,7 +212,7 @@ int main(){
         system("cls");
         cout<<"Pls enter your name\n>> ";
         while(true){
-            cin>>fullname;
+            getline(cin,fullname);
             if(!cin.fail() && !(int(fullname[0])>31 && int(fullname[0])<65) && !(int(fullname[0])>90 && int(fullname[0])<97) && !(int(fullname[0])>122 && int(fullname[0])<127)){
                 accept = true;
                 break;}
@@ -190,6 +222,7 @@ int main(){
                         cin.ignore(numeric_limits<streamsize>::max(), '\n');
                         cout<<"Pls enter a valid name that is not start with character or a number\n>> ";
                 }}
+        passenger();
         break;
     }else{
         system("cls");
