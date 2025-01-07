@@ -1,6 +1,6 @@
 #include <iostream>
 #include <vector>
-#include <string.h>
+#include <string>
 #include <cstdlib>
 #include <variant>
 #include <limits>
@@ -63,6 +63,7 @@ int main(){
 }
 
 
+
 void adminagain(){
     char ask;
     cin>>ask;
@@ -87,7 +88,6 @@ void adminagain(){
 
 void valshow(vector<variant<int, string>> vec){
     int j = 1;
-    system("cls");
     for(int i = 0;i<vec.size();i+=7){
         cout<<"List of all Flights/Trains\n"<<j<<")ID: "<<get<string>(vec[i])<<get<int>(vec[i+1])<<" ------ Type: "<<get<string>(vec[i+2])<<" ------ From: "
     <<get<string>(vec[i+3])<<" ------ To: "<<get<string>(vec[i+4])<<" ------ Empty seats: "<<get<int>(vec[i+5])<<" ------ Move at: "<<get<string>(vec[i+6])<<endl;
@@ -98,7 +98,9 @@ void valshow(vector<variant<int, string>> vec){
 void del(){
     int a;
     bool ok = false;
+    char ask;
     if(ft.empty() == false){
+        system("cls");
     valshow(ft);
     cout<<"Pls enter the Flight/Train number\n>> ";
     while(true){
@@ -119,6 +121,7 @@ void del(){
             break;
         }
     }
+    system("cls");
     valshow(ft);
     if(ok != true){
         cout<<"Flight/Train did't remove due to inexistance or invalid input number\n";
@@ -130,7 +133,6 @@ void del(){
         cout<<"There is no Flights/Trains\n";
     }
     
-    cout<<"Do you like to do another thing Sir?(y/n)>> ";
     adminagain();
 }
 
@@ -186,7 +188,27 @@ void add(){
     cin>>tmp;
     ft.push_back(tmp);
     system("cls");
-    cout<<"***Flight/Train added successfully***\nDo you like to do another thing Sir?(y/n)>> ";
+    cout<<"***Flight/Train added successfully***\nDo you like to do another thing Sir?(y/n)\n>> ";
+    adminagain();
+
+}
+
+void query(){
+    int j = 1;
+    char ask;
+    cout<<"Reserved tickets: \n";
+    for(int i = 0;i<reserved.size();i+=9){
+        
+        cout<<j<<")ID: "<<get<string>(reserved[i])<<get<int>(reserved[i+1])<<" ------ Type: "<<get<string>(reserved[i+2])<<" ------ From: "
+        <<get<string>(reserved[i+3])<<" ------ To: "<<get<string>(reserved[i+4])<<" ------ Seat number: "<<get<int>(reserved[i+5])
+        <<" ------ Move at: "<<get<string>(reserved[i+6])<<" ------ Reserved by: "<<get<string>(reserved[i+7])<<endl;
+        j++;}
+    j = 1;
+    cout<<"\nCancled tickets: ";
+    valshow(cancled);
+    cout<<"\nUnreserved tickets: \n";
+    valshow(ft);
+    cout<<"\nDo you like to do another thing Sir?(y/n)\n>> ";
     adminagain();
 
 }
@@ -194,7 +216,7 @@ void add(){
 void admin(){
     int a = 3;
     system("cls");
-    cout<<"Welcome back Sir\n1)Adding a new Fligh/Train\n2)Removing a Flight/Train\n0)Exit\n>> ";
+    cout<<"Welcome back Sir\n1)Adding a new Fligh/Train\n2)Removing a Flight/Train\n3)Report of all\n0)Exit\n>> ";
     do{
         cin>>a;
         if(!cin.fail() && a == 1){
@@ -202,6 +224,9 @@ void admin(){
             break;
         }else if(!cin.fail() && a == 2){
             del();
+            break;
+        }else if(!cin.fail() && a == 3){
+            query();
             break;
         }else if(cin.fail()){
             cout<<"Wrong input, Try again\n>> ";
@@ -265,7 +290,7 @@ void reserve(){
 }}
 
 void search(bool searchcancle){
-    string a;
+    string a,tempstring = "",tempshow = "";
     vector<variant<int, string>> usevec;
     int b;
     int j = 1,pow = 1;
@@ -278,11 +303,11 @@ void search(bool searchcancle){
     system("cls");
     cout<<"Pls enter the Flight/Train's ID or destenation\n>> ";
     cin>>a;
-    if((a[0] == 'F' && a[1] == '0' && a[2] == '0') || (a[0] == 'F' && a[1] == '0' && a[2] == '0')){
+    if((a[0] == 'F' && a[1] == '0' && a[2] == '0') || (a[0] == 'T' && a[1] == '1' && a[2] == '0')){
         a = a.substr(3);
         cout<<"List of all Flights/Trains\n";
         for(int i = 0;i<usevec.size();i+=7){
-            if(a == to_string(get<int>(usevec[i+1]))){
+            if(a == to_string(get<int>(usevec[i+1])) && get<int>(usevec[i+5]) != 0){
                 cout<<j<<")ID: "<<get<string>(ft[i])<<get<int>(usevec[i+1])<<" ------ Type: "<<get<string>(usevec[i+2])<<" ------ From: "
                     <<get<string>(usevec[i+3])<<" ------ To: "<<get<string>(usevec[i+4])<<" ------ Seat number: "<<get<int>(usevec[i+5])<<" ------ Move at: "<<get<string>(usevec[i+6])<<endl;
                 tmpvec.push_back(usevec[i]);
@@ -297,9 +322,15 @@ void search(bool searchcancle){
         }
         j = 1;
     }else{
-        cout<<"List of all Flights/Trains\n";
+        for(int i = 0;i<a.length();i++){
+            tempstring += tolower(a[i]);
+        }
+        cout<<"List of all Flights/Trains\n"<<tempstring<<endl;
         for(int i = 0;i<usevec.size();i+=7){
-        if(a == get<string>(usevec[i+4])){
+            for(int t = 0;t<get<string>(usevec[i+4]).length();t++){
+                tempshow += tolower(get<string>(usevec[i+4])[t]);
+            }
+        if(tempstring == tempshow && get<int>(usevec[i+5]) != 0){
             cout<<j<<")ID: "<<get<string>(usevec[i])<<get<int>(usevec[i+1])<<" ------ Type: "<<get<string>(usevec[i+2])<<" ------ From: "
                 <<get<string>(usevec[i+3])<<" ------ To: "<<get<string>(usevec[i+4])<<" ------ Seat number: "<<get<int>(usevec[i+5])<<" ------ Move at: "<<get<string>(usevec[i+6])<<endl;
                 tmpvec.push_back(usevec[i]);
