@@ -32,6 +32,10 @@ int main(){
         if(!cin.fail() && user == "admin"){
             admin();
             break;
+        }else if(!cin.fail() && user == "exit"){
+            system("cls");
+            cout<<"Have nice time!";
+            break;
         }else if(!cin.fail() && !(int(user[0])>31 && int(user[0])<65) && !(int(user[0])>90 && int(user[0])<97) && !(int(user[0])>122 && int(user[0])<127)){
             system("cls");
             cout<<"Pls enter your name\n>> ";
