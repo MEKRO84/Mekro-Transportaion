@@ -10,8 +10,8 @@ This project is a copmplete app that contains these features
 3) searching tickets by ID or destnation
 4) Searching Cancled tickets by others
 
-### Instalation
+## Instalation
 No need to install just use the .exe file or compile it using any compiler
 
-#### Note
+## Note
 This was the filanl project of Isfahan University's first term
