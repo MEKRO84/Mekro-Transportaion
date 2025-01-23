@@ -12,3 +12,6 @@ This project is a copmplete app that contains these features
 
 ### Instalation
 No need to install just use the .exe file or compile it using any compiler
+
+#### Note
+This was the filanl project of Isfahan University's first term
