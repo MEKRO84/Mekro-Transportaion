@@ -15,3 +15,6 @@ No need to install just use the .exe file or compile it using any compiler
 
 ## Note
 This was the filanl project of Isfahan University's first term
+
+## License
+This project is owned by Matin Keshavarz
